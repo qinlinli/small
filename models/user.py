@@ -1,4 +1,7 @@
 from datetime import datetime
+
+from werkzeug.security import generate_password_hash
+
 from miniapp.corelibs.stone import db
 from models.base import Base
 
@@ -21,3 +24,12 @@ class User(Base):
     @classmethod
     def get_by_mobile(cls, mobile):
         return cls.query.filter(cls.mobile == mobile).first()
+
+    @classmethod
+    def create(cls, data):
+        password = generate_password_hash(data.get('password'))
+        data.update({'password':password})
+        obj = cls(**data)
+        obj.save()
+        return object
+

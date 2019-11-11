@@ -8,7 +8,7 @@ bp = Blueprint('miniapp.views', __name__, url_prefix='/api/app/user')
 
 
 @bp.route('', methods=['POST'])
-def verify_mobile():
+async def verify_mobile():
     data = request.get_json()
     mobile = data.get('mobile')
     user = User.get_by_mobile(mobile)
@@ -16,5 +16,5 @@ def verify_mobile():
         return fail(codes.HTTP_OK,
                     codes.CODE_INVALID_REQUEST_DATA,
                     "员工不是审核通过的状态""号码已经注册")
-    User.create(**data)
+    User.create(data)
     return success("注册成功")
